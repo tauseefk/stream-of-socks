@@ -2,22 +2,20 @@
 
 var socket = io.connect('http://localhost:8080');
 
-var sockStream = new ToyRx.Stream(function(observer) {
+var sockStream = new ToyRx.Stream(observer => {
   socket.on('newElement', observer.next);
   socket.on('disconnect', observer.complete);
 })
 
-var blip = sockStream.map(function(data) {
-  return data.hello;
-});
+var mappedStream = sockStream.map(data => data.message);
 
-blip.subscribe(
+mappedStream.subscribe(
   {
-    next: function(data) {
+    next: data => {
       document.querySelector('#counter').textContent++;
-      socket.emit('my other event', {my: 'data'});
+      socket.emit('otherEvent', { my: 'data' });
       return data;
     },
-    complete: function() {}
+    complete: () => { }
   }
 );

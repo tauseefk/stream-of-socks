@@ -1,4 +1,4 @@
-;(function (Rx) {
+; (Rx => {
   'use strict';
 
   class Observable {
@@ -6,7 +6,7 @@
       this.subscribe = subscribe;
     }
 
-    subscribe () {}
+    subscribe() { }
   }
 
   /**
@@ -40,4 +40,4 @@
 
   Rx.Stream = Stream;
 
-}) (ToyRx = {})
+})(ToyRx = {})
