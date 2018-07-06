@@ -29,20 +29,14 @@
    * @param fn: a function that takes an observable
    * @returns observable with observer mapped to fn
    */
-  var map = function (fn) {
-    return function (stream) {
-      return {
-        subscribe: function (observer) {
-          stream.subscribe({
-            next: function (value) {
-              return observer.next(fn(value));
-            },
-            complete: observer.complete
-          })
-        }
-      }
+  const map = (fn) => (stream) => ({
+    subscribe: (observer) => {
+      stream.subscribe({
+        next: data => observer.next(fn(data)),
+        complete: observer.complete
+      })
     }
-  }
+  })
 
   Rx.Stream = Stream;
 
