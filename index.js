@@ -1,22 +1,22 @@
 'use strict';
 
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 app.use('/', express.static(__dirname));
 server.listen(8080);
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function (socket) {
+io.on('connection', socket => {
   socket.emit('newElement', 'connection established!');
-  socket.on('my other event', function (data) {
-    setTimeout(function() {
-      socket.emit('newElement', {hello: 'world'});
+  socket.on('otherEvent', data => {
+    setTimeout(() => {
+      socket.emit('newElement', { message: 'world' });
     }, 2000);
   });
 });
