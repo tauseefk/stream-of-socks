@@ -1,27 +1,29 @@
 ;(function (Rx) {
   'use strict';
 
-  var Observer = function () {}
+  class Observable {
+    constructor(subscribe) {
+      this.subscribe = subscribe;
+    }
 
-  Observer.prototype.next = function (data) {}
-  Observer.prototype.complete = function () {}
-
-  var Observable = function (subscribe) {
-    this.subscribe = subscribe;
+    subscribe () {}
   }
-
-  Observable.prototype.subscribe = function (observer) {}
 
   /**
    * @extends Observable
    * @param subscribe:
    */
-  var Stream = function (subscribe) {
-    Observable.call (this, subscribe);
+  class Stream extends Observable {
+    constructor(subscribe) {
+      super(subscribe);
+    }
+    compose(operator) {
+      return operator(this);
+    }
+    map(fn) {
+      return this.compose(map(fn));
+    }
   }
-
-  Stream.prototype = Object.create(Observable.prototype);
-  Stream.prototype.constructor = Stream;
 
   /**
    * @param fn: a function that takes an observable
@@ -40,13 +42,6 @@
         }
       }
     }
-  }
-
-  Stream.prototype.compose = function (operator) {
-    return operator(this);
-  }
-  Stream.prototype.map = function (fn) {
-    return this.compose(map(fn));
   }
 
   Rx.Stream = Stream;
